@@ -1,0 +1,68 @@
+
+import React, { useState, useEffect } from 'react';
+import { TimeOverview } from '@/components/TimeOverview';
+import { CategoryManager } from '@/components/CategoryManager';
+import { ActivityChart } from '@/components/ActivityChart';
+import { QuickStats } from '@/components/QuickStats';
+import { RecentActivity } from '@/components/RecentActivity';
+import { AchievementPanel } from '@/components/AchievementPanel';
+import { Card } from '@/components/ui/card';
+
+export const Dashboard = () => {
+  const [timeData, setTimeData] = useState(null);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    // Load data from localStorage
+    loadDashboardData();
+    
+    // Set up interval to refresh data
+    const interval = setInterval(loadDashboardData, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const loadDashboardData = () => {
+    const savedData = localStorage.getItem('timetrack_daily_data');
+    const savedCategories = localStorage.getItem('timetrack_categories');
+    
+    if (savedData) {
+      setTimeData(JSON.parse(savedData));
+    }
+    
+    if (savedCategories) {
+      setCategories(JSON.parse(savedCategories));
+    } else {
+      // Default categories
+      const defaultCategories = [
+        { id: '1', name: 'עבודה', color: '#3b82f6', domains: [] },
+        { id: '2', name: 'לימודים', color: '#10b981', domains: [] },
+        { id: '3', name: 'רשתות חברתיות', color: '#f59e0b', domains: ['facebook.com', 'instagram.com', 'twitter.com'] },
+        { id: '4', name: 'בידור', color: '#ef4444', domains: ['youtube.com', 'netflix.com'] },
+        { id: '5', name: 'חדשות', color: '#8b5cf6', domains: ['ynet.co.il', 'walla.co.il'] },
+      ];
+      setCategories(defaultCategories);
+      localStorage.setItem('timetrack_categories', JSON.stringify(defaultCategories));
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Quick Stats Row */}
+      <QuickStats />
+      
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-6">
+          <TimeOverview />
+          <ActivityChart />
+        </div>
+        
+        <div className="space-y-6">
+          <AchievementPanel />
+          <CategoryManager categories={categories} onCategoriesChange={setCategories} />
+          <RecentActivity />
+        </div>
+      </div>
+    </div>
+  );
+};
