@@ -63,11 +63,11 @@ This project is built with:
 ## How can I run this project in a browser?
 
 1. Install dependencies with `npm install`.
-2. Run `npm run build` to generate the `dist` folder.
-3. Open `dist/index.html` directly in your browser.
+2. Run `npm run build` to generate the `extension` folder.
+3. Open `extension/index.html` directly in your browser or load the `extension` folder as a Chrome extension.
 
-The repository already includes a prebuilt `dist` directory so you can also
-open `dist/index.html` without running the build step.
+The repository already includes a prebuilt `extension` directory so you can also
+open `extension/index.html` or load the folder without running the build step.
 
 ## How can I deploy this project?
 

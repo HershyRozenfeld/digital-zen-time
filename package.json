@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && npm run build:sw",
-    "build:sw": "esbuild src/background.js --outfile=dist/background.js --format=esm",
+    "build:sw": "esbuild src/background.js --outfile=extension/background.js --format=esm",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview"
