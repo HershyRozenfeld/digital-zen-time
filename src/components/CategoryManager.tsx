@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Edit2, Trash2, Globe } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { setItem } from '@/lib/storage';
 
 interface Category {
   id: string;
@@ -28,7 +29,7 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({ categories, on
 
   const colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#06b6d4', '#84cc16'];
 
-  const addCategory = () => {
+  const addCategory = async () => {
     if (newCategoryName.trim()) {
       const newCategory: Category = {
         id: Date.now().toString(),
@@ -38,19 +39,19 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({ categories, on
       };
       const updatedCategories = [...categories, newCategory];
       onCategoriesChange(updatedCategories);
-      localStorage.setItem('timetrack_categories', JSON.stringify(updatedCategories));
+      await setItem('timetrack_categories', updatedCategories);
       setNewCategoryName('');
       setIsAddingCategory(false);
     }
   };
 
-  const deleteCategory = (categoryId: string) => {
+  const deleteCategory = async (categoryId: string) => {
     const updatedCategories = categories.filter(cat => cat.id !== categoryId);
     onCategoriesChange(updatedCategories);
-    localStorage.setItem('timetrack_categories', JSON.stringify(updatedCategories));
+    await setItem('timetrack_categories', updatedCategories);
   };
 
-  const addDomainToCategory = (categoryId: string, domain: string) => {
+  const addDomainToCategory = async (categoryId: string, domain: string) => {
     if (!domain.trim()) return;
     
     const updatedCategories = categories.map(cat => {
@@ -60,11 +61,11 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({ categories, on
       return cat;
     });
     onCategoriesChange(updatedCategories);
-    localStorage.setItem('timetrack_categories', JSON.stringify(updatedCategories));
+    await setItem('timetrack_categories', updatedCategories);
     setNewDomain('');
   };
 
-  const removeDomainFromCategory = (categoryId: string, domain: string) => {
+  const removeDomainFromCategory = async (categoryId: string, domain: string) => {
     const updatedCategories = categories.map(cat => {
       if (cat.id === categoryId) {
         return { ...cat, domains: cat.domains.filter(d => d !== domain) };
@@ -72,7 +73,7 @@ export const CategoryManager: React.FC<CategoryManagerProps> = ({ categories, on
       return cat;
     });
     onCategoriesChange(updatedCategories);
-    localStorage.setItem('timetrack_categories', JSON.stringify(updatedCategories));
+    await setItem('timetrack_categories', updatedCategories);
   };
 
   return (

@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "Digital Zen Time",
+  "description": "Automatic time tracking in Chrome",
+  "version": "1.0.0",
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "Digital Zen Time"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "permissions": [
+    "storage",
+    "tabs",
+    "idle",
+    "alarms"
+  ],
+  "host_permissions": ["<all_urls>"]
+}

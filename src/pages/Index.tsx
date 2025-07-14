@@ -4,24 +4,26 @@ import { Dashboard } from '@/components/Dashboard';
 import { Onboarding } from '@/components/Onboarding';
 import { Navigation } from '@/components/Navigation';
 import { TimeTracker } from '@/lib/timeTracker';
+import { getItem, setItem } from '@/lib/storage';
 
 const Index = () => {
   const [isFirstTime, setIsFirstTime] = useState(false);
   const [currentView, setCurrentView] = useState('dashboard');
 
   useEffect(() => {
-    // Check if this is first time user
-    const hasSeenOnboarding = localStorage.getItem('timetrack_onboarding_complete');
-    if (!hasSeenOnboarding) {
-      setIsFirstTime(true);
-    }
+    (async () => {
+      const hasSeenOnboarding = await getItem('timetrack_onboarding_complete');
+      if (!hasSeenOnboarding) {
+        setIsFirstTime(true);
+      }
+    })();
 
     // Initialize time tracker
     TimeTracker.init();
   }, []);
 
-  const handleOnboardingComplete = () => {
-    localStorage.setItem('timetrack_onboarding_complete', 'true');
+  const handleOnboardingComplete = async () => {
+    await setItem('timetrack_onboarding_complete', 'true');
     setIsFirstTime(false);
   };
 

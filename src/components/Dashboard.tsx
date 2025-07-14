@@ -7,30 +7,31 @@ import { QuickStats } from '@/components/QuickStats';
 import { RecentActivity } from '@/components/RecentActivity';
 import { AchievementPanel } from '@/components/AchievementPanel';
 import { Card } from '@/components/ui/card';
+import { getItem, setItem } from '@/lib/storage';
 
 export const Dashboard = () => {
   const [timeData, setTimeData] = useState(null);
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    // Load data from localStorage
+    // Load data from storage
     loadDashboardData();
-    
+
     // Set up interval to refresh data
     const interval = setInterval(loadDashboardData, 5000);
     return () => clearInterval(interval);
   }, []);
 
-  const loadDashboardData = () => {
-    const savedData = localStorage.getItem('timetrack_daily_data');
-    const savedCategories = localStorage.getItem('timetrack_categories');
-    
+  const loadDashboardData = async () => {
+    const savedData = await getItem('timetrack_daily_data');
+    const savedCategories = await getItem('timetrack_categories');
+
     if (savedData) {
-      setTimeData(JSON.parse(savedData));
+      setTimeData(savedData);
     }
-    
+
     if (savedCategories) {
-      setCategories(JSON.parse(savedCategories));
+      setCategories(savedCategories);
     } else {
       // Default categories
       const defaultCategories = [
@@ -41,7 +42,7 @@ export const Dashboard = () => {
         { id: '5', name: 'חדשות', color: '#8b5cf6', domains: ['ynet.co.il', 'walla.co.il'] },
       ];
       setCategories(defaultCategories);
-      localStorage.setItem('timetrack_categories', JSON.stringify(defaultCategories));
+      await setItem('timetrack_categories', defaultCategories);
     }
   };
 

@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && npm run build:sw",
+    "build:sw": "tsc src/background.ts --outDir dist --target ES2020 --module ES2020",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview"
