@@ -60,6 +60,15 @@ This project is built with:
 - shadcn-ui
 - Tailwind CSS
 
+## How can I run this project in a browser?
+
+1. Install dependencies with `npm install`.
+2. Run `npm run build` to generate the `dist` folder.
+3. Open `dist/index.html` directly in your browser.
+
+The repository already includes a prebuilt `dist` directory so you can also
+open `dist/index.html` without running the build step.
+
 ## How can I deploy this project?
 
 Simply open [Lovable](https://lovable.dev/projects/8ace0ac5-479d-4b91-afab-7ac0c1c11e6b) and click on Share -> Publish.
